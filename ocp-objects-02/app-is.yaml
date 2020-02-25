@@ -1,0 +1,13 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  generation: 1
+  labels:
+    app: springboot-ocp-app-02
+  name: springboot-ocp-app-02
+  namespace: my-sb-app-02
+spec:
+  lookupPolicy:
+    local: false
+status:
+  

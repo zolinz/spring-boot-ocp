@@ -1,0 +1,26 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftNewApp
+  creationTimestamp: 2020-02-24T21:18:16Z
+  generation: 1
+  labels:
+    app: springboot-ocp-app
+  name: springboot-ocp-app
+  namespace: my-sb-app
+  resourceVersion: "346844"
+  selfLink: /apis/image.openshift.io/v1/namespaces/my-sb-app/imagestreams/springboot-ocp-app
+  uid: 2c4719ab-574b-11ea-a5e3-08002716a724
+spec:
+  lookupPolicy:
+    local: false
+status:
+  dockerImageRepository: 172.30.1.1:5000/my-sb-app/springboot-ocp-app
+  tags:
+    - items:
+        - created: 2020-02-24T21:22:30Z
+          dockerImageReference: 172.30.1.1:5000/my-sb-app/springboot-ocp-app@sha256:2cd3b86de7e8cc41b194eb9b87b63106e8ed2faaab640fce52444ec46d00f508
+          generation: 1
+          image: sha256:2cd3b86de7e8cc41b194eb9b87b63106e8ed2faaab640fce52444ec46d00f508
+      tag: latest
