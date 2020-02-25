@@ -1,0 +1,21 @@
+try {
+           timeout(time: 20, unit: 'MINUTES') {
+              node('nodejs') {
+                  stage('build') {
+
+                    openshiftBuild(buildConfig: 'springboot-ocp-app-02', namespace: 'my-sb-app-02',showBuildLogs: 'true')
+                  }
+
+                  stage('deploy') {
+
+                  openshiftDeploy(deploymentConfig: 'springboot-ocp-app-02', namespace: 'my-sb-app-02',verbose: 'true')
+                  }
+
+                }
+           }
+        } catch (err) {
+           echo "in catch block"
+           echo "Caught: ${err}"
+           currentBuild.result = 'FAILURE'
+           throw err
+        }
