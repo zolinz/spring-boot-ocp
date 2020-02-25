@@ -26,6 +26,12 @@ spec:
 
                     openshiftBuild(buildConfig: 'springboot-ocp-app-02', namespace: 'my-sb-app-02',showBuildLogs: 'true')
                   }
+
+                  stage('deploy') {
+
+                  openshiftDeploy(deploymentConfig: 'springboot-ocp-app-02', namespace: 'my-sb-app-02',verbose: 'true')
+                  }
+
                 }
            }
         } catch (err) {
