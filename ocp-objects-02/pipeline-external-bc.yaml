@@ -15,12 +15,11 @@ spec:
   resources: {}
   runPolicy: Serial
   source:
-    source:
-      git:
-        uri: "https://github.com/zolinz/spring-boot-ocp.git"
+    git:
+      uri: "https://github.com/zolinz/spring-boot-ocp.git"
   strategy:
     jenkinsPipelineStrategy:
-      jenkinsfilePath: jenkinsfilePath: spring-boot-ocp/jenkins-ocp-client-plugin/Jenkinsfile
+      jenkinsfilePath: spring-boot-ocp/jenkins-ocp-client-plugin/Jenkinsfile
     type: JenkinsPipeline
   successfulBuildsHistoryLimit: 5
   triggers:
