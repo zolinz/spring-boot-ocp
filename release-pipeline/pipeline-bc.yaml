@@ -1,0 +1,73 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  annotations:
+  labels:
+    app: springboot-ocp-app-02
+    name: springboot-ocp-app-02-release-pipeline
+  name: springboot-ocp-app-02--release-pipeline
+  namespace: jenkins
+spec:
+  failedBuildsHistoryLimit: 5
+  nodeSelector: {}
+  output: {}
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    type: None
+  strategy:
+    jenkinsPipelineStrategy:
+      jenkinsfile: |-
+        try {
+           timeout(time: 20, unit: 'MINUTES') {
+              node('nodejs') {
+
+
+              openshift.withCluster() {
+                                  openshift.withProject("my-sb-app-02") {
+                                      echo "Using project: ${openshift.project()}"
+                                      echo "Using cluster: ${openshift.cluster()}"
+                                      def myBcs = openshift.selector('bc')
+                                      myBcs.withEach{
+                                        echo " BC names : ${it.name()}  "
+                                      }
+                                  }
+
+                                  openshift.withProject("my-sb-app") {
+                                      echo "Using project: ${openshift.project()}"
+                                      def myBcs = openshift.selector('bc')
+                                      myBcs.withEach{
+                                          echo " BC names : ${it.name()}  "
+                                      }
+                                  }
+                            }
+                  stage('build') {
+
+                    openshiftBuild(buildConfig: 'springboot-ocp-app-02', namespace: 'my-sb-app-02',showBuildLogs: 'true')
+                  }
+
+                  stage('deploy') {
+
+                  openshiftDeploy(deploymentConfig: 'springboot-ocp-app-02', namespace: 'my-sb-app-02',verbose: 'true')
+                  }
+
+                }
+           }
+        } catch (err) {
+           echo "in catch block"
+           echo "Caught: ${err}"
+           currentBuild.result = 'FAILURE'
+           throw err
+        }
+    type: JenkinsPipeline
+  successfulBuildsHistoryLimit: 5
+  triggers:
+    - github:
+        secret: secret101
+      type: GitHub
+    - generic:
+        secret: secret101
+      type: Generic
+status:
+  lastVersion: 1
