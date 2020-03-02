@@ -23,6 +23,7 @@ spec:
                     openshift.withCluster() {
                           openshift.withProject("my-sb-app-02") {
                               echo "Using project: ${openshift.project()}"
+                              echo "Using cluster: ${openshift.cluster()}"
                               def myBcs = openshift.selector('bc')
                               myBcs.withEach{
                                 echo " BC names : ${it.name()}  "
@@ -56,4 +57,3 @@ spec:
         secret: secret101
       type: Generic
 status:
-  lastVersion: 1
