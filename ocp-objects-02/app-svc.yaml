@@ -1,13 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    openshift.io/generated-by: OpenShiftNewApp
-  creationTimestamp: null
   labels:
-    app: springboot-ocp-app
-  name: springboot-ocp-app
-  selfLink: /api/v1/namespaces/my-sb-app/services/springboot-ocp-app
+    app: springboot-ocp-app-02
+  name: springboot-ocp-app-02
+  selfLink: /api/v1/namespaces/my-sb-app-02/services/springboot-ocp-app-02
 spec:
   ports:
     - name: 8080-tcp
@@ -23,8 +20,8 @@ spec:
       protocol: TCP
       targetPort: 8778
   selector:
-    app: springboot-ocp-app
-    deploymentconfig: springboot-ocp-app
+    app: springboot-ocp-app-02
+    deploymentconfig: springboot-ocp-app-02
   sessionAffinity: None
   type: ClusterIP
 status:

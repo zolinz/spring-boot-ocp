@@ -15,7 +15,7 @@ public class MyController {
     {
         List<Customer> customerList = new ArrayList<Customer>();
         customerList.add(new Customer(1, "Steve"));
-        customerList.add(new Customer(2, "john"));
+        customerList.add(new Customer(2, "Zoltan"));
         return customerList;
     }
 }
