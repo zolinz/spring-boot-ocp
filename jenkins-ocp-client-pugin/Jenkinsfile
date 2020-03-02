@@ -1,21 +1,31 @@
 try {
-           timeout(time: 20, unit: 'MINUTES') {
-              node('nodejs') {
-                  stage('build') {
+    timeout(time: 20, unit: 'MINUTES') {
+        node('nodejs') {
+            stage('build') {
+                openshift.withCluster() {
+                    openshift.withProject("my-sb-app-02") {
+                        echo "Using project: ${openshift.project()}"
+                        echo "Using cluster: ${openshift.cluster()}"
+                        def myBcs = openshift.selector('bc')
+                        myBcs.withEach{
+                            echo " BC names : ${it.name()}  "
+                        }
+                    }
 
-                    openshiftBuild(buildConfig: 'springboot-ocp-app-02', namespace: 'my-sb-app-02',showBuildLogs: 'true')
-                  }
-
-                  stage('deploy') {
-
-                  openshiftDeploy(deploymentConfig: 'springboot-ocp-app-02', namespace: 'my-sb-app-02',verbose: 'true')
-                  }
-
+                    openshift.withProject("my-sb-app") {
+                        echo "Using project: ${openshift.project()}"
+                        def myBcs = openshift.selector('bc')
+                        myBcs.withEach{
+                            echo " BC names : ${it.name()}  "
+                        }
+                    }
                 }
-           }
-        } catch (err) {
-           echo "in catch block"
-           echo "Caught: ${err}"
-           currentBuild.result = 'FAILURE'
-           throw err
+            }
         }
+    }
+} catch (err) {
+    echo "in catch block"
+    echo "Caught: ${err}"
+    currentBuild.result = 'FAILURE'
+    throw err
+}
