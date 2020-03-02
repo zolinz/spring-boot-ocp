@@ -1,0 +1,67 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  labels:
+    app: springboot-ocp-app-02
+  name: springboot-ocp-app-02
+  namespace: release-build-ci
+spec:
+  replicas: 3
+  revisionHistoryLimit: 10
+  selector:
+    app: springboot-ocp-app-02
+    deploymentconfig: springboot-ocp-app-02
+  strategy:
+    activeDeadlineSeconds: 21600
+    resources: {}
+    rollingParams:
+      intervalSeconds: 1
+      maxSurge: 25%
+      maxUnavailable: 25%
+      timeoutSeconds: 600
+      updatePeriodSeconds: 1
+    type: Rolling
+  template:
+    metadata:
+      labels:
+        app: springboot-ocp-app-02
+        deploymentconfig: springboot-ocp-app-02
+    spec:
+      containers:
+        - image: 172.30.1.1:5000/my-sb-app-02/springboot-ocp-app-02
+          imagePullPolicy: Always
+          name: springboot-ocp-app-02
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+            - containerPort: 8443
+              protocol: TCP
+            - containerPort: 8778
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+  test: false
+  triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+          - springboot-ocp-app-02
+        from:
+          kind: ImageStreamTag
+          name: 'springboot-ocp-app-02:latest'
+          namespace: my-sb-app
+      type: ImageChange
+status:
+  availableReplicas: 0
+  latestVersion: 0
+  observedGeneration: 0
+  replicas: 0
+  unavailableReplicas: 0
+  updatedReplicas: 0

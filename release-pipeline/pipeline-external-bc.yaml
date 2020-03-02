@@ -1,0 +1,33 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  annotations:
+  labels:
+    app: springboot-ocp-app-02
+    name: springboot-ocp-app-02-pipeline-ex
+  name: springboot-ocp-app-02-pipeline-ex
+  namespace: jenkins
+spec:
+  failedBuildsHistoryLimit: 5
+  nodeSelector: {}
+  output: {}
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    git:
+      uri: "https://github.com/zolinz/spring-boot-ocp.git"
+  strategy:
+    jenkinsPipelineStrategy:
+      jenkinsfilePath: spring-boot-ocp/jenkins-ocp-client-plugin/Jenkinsfile
+    type: JenkinsPipeline
+  successfulBuildsHistoryLimit: 5
+  triggers:
+    - github:
+        secret: secret101
+      type: GitHub
+    - generic:
+        secret: secret101
+      type: Generic
+status:
+  lastVersion: 1

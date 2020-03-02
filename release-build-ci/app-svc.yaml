@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: springboot-ocp-app-02
+  name: springboot-ocp-app-02
+  namespace: release-build-ci
+spec:
+  ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    - name: 8443-tcp
+      port: 8443
+      protocol: TCP
+      targetPort: 8443
+    - name: 8778-tcp
+      port: 8778
+      protocol: TCP
+      targetPort: 8778
+  selector:
+    app: springboot-ocp-app-02
+    deploymentconfig: springboot-ocp-app-02
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}
