@@ -23,33 +23,14 @@ spec:
            timeout(time: 20, unit: 'MINUTES') {
               node('nodejs') {
 
+                  stage('build deploy in ci') {
 
-              openshift.withCluster() {
-                                  openshift.withProject("my-sb-app-02") {
-                                      echo "Using project: ${openshift.project()}"
-                                      echo "Using cluster: ${openshift.cluster()}"
-                                      def myBcs = openshift.selector('bc')
-                                      myBcs.withEach{
-                                        echo " BC names : ${it.name()}  "
-                                      }
-                                  }
-
-                                  openshift.withProject("my-sb-app") {
-                                      echo "Using project: ${openshift.project()}"
-                                      def myBcs = openshift.selector('bc')
-                                      myBcs.withEach{
-                                          echo " BC names : ${it.name()}  "
-                                      }
-                                  }
-                            }
-                  stage('build') {
-
-                    openshiftBuild(buildConfig: 'springboot-ocp-app-02', namespace: 'my-sb-app-02',showBuildLogs: 'true')
+                    openshiftBuild(buildConfig: 'springboot-ocp-app-02', namespace: 'release-build-ci',showBuildLogs: 'true')
                   }
 
-                  stage('deploy') {
+                  stage('deploy to test env') {
 
-                  openshiftDeploy(deploymentConfig: 'springboot-ocp-app-02', namespace: 'my-sb-app-02',verbose: 'true')
+                  openshiftDeploy(deploymentConfig: 'springboot-ocp-app-02', namespace: 'release-test',verbose: 'true')
                   }
 
                 }
