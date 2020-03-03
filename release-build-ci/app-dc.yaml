@@ -56,7 +56,7 @@ spec:
         from:
           kind: ImageStreamTag
           name: 'springboot-ocp-app-02:latest'
-          namespace: my-sb-app
+          namespace: release-build-ci
       type: ImageChange
 status:
   availableReplicas: 0
