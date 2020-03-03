@@ -5,7 +5,7 @@ metadata:
   labels:
     app: springboot-ocp-app-02
     name: springboot-ocp-app-02-release-pipeline
-  name: springboot-ocp-app-02--release-pipeline
+  name: springboot-ocp-app-02-release-pipeline
   namespace: jenkins
 spec:
   failedBuildsHistoryLimit: 5

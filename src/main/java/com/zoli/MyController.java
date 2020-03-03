@@ -14,7 +14,7 @@ public class MyController {
     public List<Customer> findAll()
     {
         List<Customer> customerList = new ArrayList<Customer>();
-        customerList.add(new Customer(1, "Sebi"));
+        customerList.add(new Customer(1, "Spiderman"));
         customerList.add(new Customer(2, "Superman"));
         return customerList;
     }
