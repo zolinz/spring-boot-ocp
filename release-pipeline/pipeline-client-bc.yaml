@@ -1,0 +1,56 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  annotations:
+  labels:
+    app: springboot-ocp-app-02
+    name: springboot-ocp-app-02-release-pipeline
+  name: springboot-ocp-app-02-release-pipeline-client
+  namespace: jenkins
+spec:
+  failedBuildsHistoryLimit: 5
+  nodeSelector: {}
+  output: {}
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    type: None
+  strategy:
+    jenkinsPipelineStrategy:
+      jenkinsfile: |-
+        try {
+                  timeout(time: 20, unit: 'MINUTES') {
+                     node('nodejs') {
+                         stage('build') {
+                           openshift.withCluster() {
+                                 openshift.withProject("release-build-ci") {
+                                     echo "Using project: ${openshift.project()}"
+                                     echo "Using cluster: ${openshift.cluster()}"
+                                     def bc = openshift.selector('bc' , 'springboot-ocp-app-02')
+
+                                     def buildSelector = bc.startBuild()
+                                         buildSelector.logs('-f')
+                                 }
+
+                           }
+                         }
+                     }
+                  }
+               } catch (err) {
+                  echo "in catch block"
+                  echo "Caught: ${err}"
+                  currentBuild.result = 'FAILURE'
+                  throw err
+               }
+    type: JenkinsPipeline
+  successfulBuildsHistoryLimit: 5
+  triggers:
+    - github:
+        secret: secret101
+      type: GitHub
+    - generic:
+        secret: secret101
+      type: Generic
+status:
+  lastVersion: 1
